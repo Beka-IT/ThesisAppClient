@@ -1,0 +1,12 @@
+{
+  "app-title": "Tez seçim sistemi",
+  "email-input": "Manas-email",
+  "password": "Şifre",
+  "sign-in": "Giriş",
+  "doesnt-sign-up": "Henüz kayıtlı değil misiniz?",
+  "sign-up": "Kayıt olmak",
+  "exists-account": "Zaten kayıtlı?",
+  "name-placeholder": "Adınız",
+  "surname-placeholder": "Soy adınız",
+  "patronomyc-placeholder": "Babanızın adı"
+}
