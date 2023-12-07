@@ -29,14 +29,16 @@ export default function SignIn() {
     return password === '' ? setError('Сырсозду киргизиниз!'): setError(null);
   }
 
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   console.log({
-  //     email: data.get('email'),
-  //     password: data.get('password'),
-  //   });
-  // };
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    validatePassword()
+    validateEmail()
+    // const data = new FormData(event.currentTarget);
+    // console.log({
+    //   email: data.get('email'),
+    //   password: data.get('password'),
+    // });
+  };
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -49,14 +51,14 @@ export default function SignIn() {
                 <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 h-10" role="alert">
                     <span className="font-medium">{ error }</span>
                 </div>
-                <form className="space-y-4 md:space-y-6" action="#">
+                <form onSubmit={ handleSubmit } className="space-y-4 md:space-y-6">
                     <div>
                         <input type="email" onBlur={validateEmail} value={login} onChange={e => setLogin(e.target.value)} name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder={t('email-input')}/>
                     </div>
                     <div>
                         <input type="password" onBlur={validatePassword} value={password} onChange={e => setPassword(e.target.value)} name="password" id="password" placeholder={t('password')} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                     </div>
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button type='submit' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     {t('sign-in')}
                     </button>
                     <p className="text-sm font-light text-gray-500 dark:text-gray-400">
