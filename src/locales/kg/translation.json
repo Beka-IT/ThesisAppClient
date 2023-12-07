@@ -8,5 +8,7 @@
   "exists-account": "Катталгансызбы?",
   "name-placeholder": "Аты",
   "surname-placeholder": "Фамилиясы",
-  "patronomyc-placeholder": "Атасынын аты"
+  "patronomyc-placeholder": "Атасынын аты",
+  "phoneNumber-placeholder": "Телефон номери",
+  "confirmPassword": "Сырсөздү тастыктоо"
 }

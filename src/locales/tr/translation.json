@@ -8,5 +8,7 @@
   "exists-account": "Zaten kayıtlı?",
   "name-placeholder": "Adınız",
   "surname-placeholder": "Soy adınız",
-  "patronomyc-placeholder": "Babanızın adı"
+  "patronomyc-placeholder": "Babanızın adı",
+  "phoneNumber-placeholder": "Telefon numarası",
+  "confirmPassword": "Şifre onayı"
 }
