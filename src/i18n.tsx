@@ -1,12 +1,12 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import kg from "./locales/kg/translation.json";
-import tr from "./locales/tr/translation.json";
+import kg from './locales/kg/translation.json';
+import tr from './locales/tr/translation.json';
 
 import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 // don't want to use this?
-// have a look at the Quick start guide 
+// have a look at the Quick start guide
 // for passing in lng and translations on init
 
 i18n
@@ -26,15 +26,12 @@ i18n
       kg: { translation: kg },
       tr: { translation: tr },
     },
-    lng: "kg",
-    fallbackLng: "kg",
+    lng: 'kg',
+    fallbackLng: 'kg',
     detection: {
-      order: ["cookie", "htmlTag", "path", "subdomain"],
-      caches: ["cookie"],
+      order: ['cookie', 'htmlTag', 'path', 'subdomain'],
+      caches: ['cookie'],
     },
   });
 
-
-
-
-  export default i18n;
+export default i18n;

@@ -15,3 +15,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+body {
+  margin: 0;
+  padding: 0;
+  scrollbar-width: thin;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgb(55, 65, 81);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgb(255, 177, 177);
+  border-radius: 20px;
+}
