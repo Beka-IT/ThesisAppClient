@@ -1,4 +1,4 @@
-import { AdminPage, SignIn, SignUp, UsersPage } from './pages';
+import { SignIn, SignUp, UserDetail, UsersPage } from './pages';
 import { ProfilePage } from './pages/profile';
 
 export interface RouteData {
@@ -14,7 +14,7 @@ export const RouteConfig = (): RouteData[] => {
   return [
     {
       path: '/',
-      page: <AdminPage />,
+      page: <SignIn />,
       public: true,
     },
     {
@@ -35,6 +35,11 @@ export const RouteConfig = (): RouteData[] => {
     {
       path: '/users',
       page: <UsersPage />,
+      public: true,
+    },
+    {
+      path: '/users/:userId',
+      page: <UserDetail />,
       public: true,
     },
   ];

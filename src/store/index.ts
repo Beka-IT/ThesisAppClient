@@ -7,4 +7,10 @@ export {
   authSlice,
   logOut,
   setCredentials,
+  searchApiSlice,
+  sidebarPath,
+  sidebarReducer,
+  sidebarSlice,
+  useLazySearchRequestQuery,
+  useSearchRequestQuery
 } from './reducers';
