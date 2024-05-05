@@ -1,5 +1,5 @@
-type key = 'refreshToken' | 'theme' | 'sidebar';
-export const useCookie = (name: key) => {
+type key = 'theme' | 'profile';
+export const useCookie = <T>(name: key) => {
   const setCookie = (data: string | object, expires?: number) => {
     let cookieValue: string;
     if (typeof data === 'string') {
@@ -24,9 +24,9 @@ export const useCookie = (name: key) => {
     if (cookie) {
       const cookieValue = cookie.substring(name.length + 1);
       try {
-        return JSON.parse(cookieValue);
+        return JSON.parse(cookieValue) as T;
       } catch (e) {
-        return cookieValue;
+        return cookieValue as T;
       }
     }
     return null;

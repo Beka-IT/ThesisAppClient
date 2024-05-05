@@ -1,46 +1,79 @@
-import { SignIn, SignUp, UserDetail, UsersPage } from './pages';
-import { ProfilePage } from './pages/profile';
-
+import { ReactNode } from 'react';
+import {
+  DeadlinePage,
+  SignIn,
+  SignUp,
+  StudentsPage,
+  TeachersPage,
+  ThesisPage,
+  ProfilePage,
+  RequestThesisPage,
+  ThesisDetail,
+  CreateThesis,
+  EditThesis
+} from './pages';
+import { Roles, type RolesType } from './types/model/roles';
 export interface RouteData {
   path: string;
-  page: JSX.Element;
-  public: boolean;
-  child?: ReadonlyArray<RouteData>;
-  children?: ReadonlyArray<RouteData>;
-  isChild?: boolean;
+  page: ReactNode;
+  roles: RolesType[]
 }
 
-export const RouteConfig = (): RouteData[] => {
-  return [
-    {
-      path: '/',
-      page: <SignIn />,
-      public: true,
-    },
-    {
-      path: '/sign-in',
-      page: <SignIn />,
-      public: true,
-    },
-    {
-      path: '/sign-up',
-      page: <SignUp />,
-      public: true,
-    },
-    {
-      path: '/profile',
-      page: <ProfilePage />,
-      public: true,
-    },
-    {
-      path: '/users',
-      page: <UsersPage />,
-      public: true,
-    },
-    {
-      path: '/users/:userId',
-      page: <UserDetail />,
-      public: true,
-    },
-  ];
-};
+export const routes: RouteData[] = [
+
+  {
+    path: '/',
+    page: <SignIn />,
+    roles: [undefined],
+  },
+  {
+    path: '/sign-up',
+    page: <SignUp />,
+    roles: [undefined],
+  },
+  {
+    path: '/profile',
+    page: <ProfilePage />,
+    roles: [undefined],
+  },
+  {
+    path: '/thesis',
+    page: <ThesisPage />,
+    roles: [undefined],
+  },
+  {
+    path: '/thesis/:id',
+    page: <ThesisDetail />,
+    roles: [undefined],
+  },
+  {
+    path: '/thesis/create',
+    page: <CreateThesis />,
+    roles: [undefined],
+  },
+  {
+    path: '/thesis/:id/edit',
+    page: <EditThesis />,
+    roles: [undefined],
+  },
+  {
+    path: '/teachers',
+    page: <TeachersPage />,
+    roles: [undefined],
+  },
+  {
+    path: '/students',
+    page: <StudentsPage />,
+    roles: [undefined],
+  },
+  {
+    path: '/deadline',
+    page: <DeadlinePage />,
+    roles: [undefined],
+  },
+  {
+    path: '/request-thesis',
+    page: <RequestThesisPage />,
+    roles: [undefined],
+  }
+];

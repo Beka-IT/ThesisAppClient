@@ -1,14 +1,11 @@
 import { Outlet, useLocation } from 'react-router-dom';
-import { Header } from 'src/components';
 
 export const Layout = () => {
   const { pathname } = useLocation();
+  const isLoginPage = pathname !== '/sign-i' && pathname !== '/sign-up'
   return (
-    <div>
-      {(pathname === '/sign-in' || pathname === '/sign-up') && <Header />}
-      <div>
-        <Outlet />
-      </div>
-    </div>
+    <>
+      <Outlet />
+    </>
   );
 };

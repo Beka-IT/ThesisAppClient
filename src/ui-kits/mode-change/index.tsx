@@ -1,16 +1,17 @@
-import { UseActions, useAppSelector } from 'src/hooks';
 import DayNightToggle from 'react-day-and-night-toggle';
+import { useTheme } from 'src/utils/theme-provider';
 
 export const ModeChange = () => {
-  const { theme } = useAppSelector((s) => s.auth);
-  const { setTheme } = UseActions();
-
+  const { state, dispatch } = useTheme();
+  const toggleTheme = () => {
+    dispatch({ type: "TOGGLE_THEME" });
+  };
   return (
     <DayNightToggle
+      size={30}
       animationInactive={false}
-      onChange={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      checked={theme === 'dark'}
-      shadows={false}
+      onChange={toggleTheme}
+      checked={state.theme === "dark"}
     />
   );
 };

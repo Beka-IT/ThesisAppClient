@@ -1,14 +1,16 @@
 {
   "app-title": "Tez seçim sistemi",
-  "email-input": "Manas-email",
+  "email": "Manas-email",
   "password": "Şifre",
   "sign-in": "Giriş",
   "doesnt-sign-up": "Henüz kayıtlı değil misiniz?",
   "sign-up": "Kayıt olmak",
   "exists-account": "Zaten kayıtlı?",
-  "name-placeholder": "Adınız",
-  "surname-placeholder": "Soy adınız",
-  "patronomyc-placeholder": "Babanızın adı",
-  "phoneNumber-placeholder": "Telefon numarası",
-  "confirmPassword": "Şifre onayı"
+  "name": "Adınız",
+  "surname": "Soy adınız",
+  "patronomyc": "Babanızın adı",
+  "phoneNumber": "Telefon numarası",
+  "confirmPassword": "Şifre onayı",
+  "verify-code": "Email verify",
+  "days": "Gun"
 }

@@ -1,47 +1,46 @@
-import React, { useState } from 'react';
+import { Button, PasswordInput, TextInput } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-import { VerifyCode } from 'src/components';
-
-// TODO remove, this demo shouldn't need to reset the theme.
+import { Link, useNavigate } from 'react-router-dom';
+import { useCookie } from 'src/hooks';
+import { useLoginMutation } from 'src/store';
+import { notify } from 'src/utils';
 
 export const SignIn = () => {
-  const [login, setLogin] = useState<string>('');
-  const [isVerify, setVerify] = useState(false);
-  const [password, setPassword] = useState<string>('');
-  const [error, setError] = useState<string | null>();
   const { t } = useTranslation();
-
+  const navigate = useNavigate()
+  const [login] = useLoginMutation()
+  const cookie = useCookie("profile")
   function isValidEmail(email: string) {
     return /\S+@manas\.edu\.kg$/.test(email);
   }
-
-  const validateEmail = () => {
-    return !isValidEmail(login) && login !== ''
-      ? setError('Манас почтаны туура киргизиниз!')
-      : setError(null);
-  };
-
-  const validatePassword = () => {
-    return password === '' && login !== ''
-      ? setError('Сырсозду киргизиниз!')
-      : setError(null);
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    validatePassword();
-    validateEmail();
-    if (!error) {
-      setVerify(true);
+  const form = useForm({
+    initialValues: {
+      email: "2308.01012@manas.edu.kg",
+      password: "123123"
+    },
+    validate: {
+      // email: (value) => isValidEmail(value),
+      password: (value) => !value
     }
-    // const data = new FormData(event.currentTarget);
-    // console.log({
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    // });
-  };
-
+  })
+  const handleSubmit = async (values: AuthRequest) => {
+    try {
+      const res = await login(values).unwrap();
+      cookie.setCookie(res)
+      notify(true, t("wellcome"))
+      navigate("/thesis")
+    } catch (error) {
+      notify(false, t("login-error"))
+    }
+  }
+  useEffect(() => {
+    const profile = cookie.getCookie()
+    if (profile) {
+      navigate("/thesis")
+    }
+  }, [])
   return (
     <section className="bg-gray-50 h-screen dark:bg-gray-900 text-center">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -50,59 +49,36 @@ export const SignIn = () => {
             <h3 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white h-16">
               {t('app-title')}
             </h3>
-            <div
-              className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-white dark:bg-gray-800 dark:text-red-400 h-10"
-              role="alert"
-            >
-              <span className="font-medium">{error}</span>
-            </div>
-            {isVerify ? (
-              <VerifyCode />
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-                <div>
-                  <input
-                    type="email"
-                    onBlur={validateEmail}
-                    value={login}
-                    autoComplete="on"
-                    onChange={(e) => setLogin(e.target.value)}
-                    name="email"
-                    id="email"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder={t('email-input')}
-                  />
-                </div>
-                <div>
-                  <input
-                    type="password"
-                    onBlur={validatePassword}
-                    value={password}
-                    autoComplete="on"
-                    onChange={(e) => setPassword(e.target.value)}
-                    name="password"
-                    id="password"
-                    placeholder={t('password')}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            <form onSubmit={form.onSubmit(values => handleSubmit(values))} className="space-y-4 md:space-y-6">
+              <div>
+                <TextInput
+                  {...form.getInputProps("email")}
+                  error={form.errors.email}
+                  label={t('email')}
+                />
+              </div>
+              <div>
+                <PasswordInput
+                  {...form.getInputProps("password")}
+                  label={t('password')}
+                />
+              </div>
+              <Button
+                type="submit"
+                bg="baseDark"
+              >
+                {t('sign-in')}
+              </Button>
+              <p className="text-sm font-light text-gray-500 dark:text-gray-400 cursor-pointer">
+                {t('doesnt-sign-up')}
+                <Link
+                  to={'/sign-up'}
+                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
-                  {t('sign-in')}
-                </button>
-                <p className="text-sm font-light text-gray-500 dark:text-gray-400 cursor-pointer">
-                  {t('doesnt-sign-up')}
-                  <Link
-                    to={'/sign-up'}
-                    className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                  >
-                    {t('sign-up')}
-                  </Link>
-                </p>
-              </form>
-            )}
+                  {t('sign-up')}
+                </Link>
+              </p>
+            </form>
           </div>
         </div>
       </div>

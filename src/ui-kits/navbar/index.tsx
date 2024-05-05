@@ -1,9 +1,8 @@
-import { Link } from 'react-router-dom';
 import { ModeChange } from '../mode-change';
 import { ProfileActions } from './profile-actions';
-import { LanguageSelect } from 'src/components';
+import { DeadlineTime, LanguageSelect } from 'src/components';
 import { BurgerMenu } from './burger-menu';
-import logo from 'src/assets/manas-logo.gif';
+import { Notifications } from '@mantine/notifications';
 
 interface NavbarProps {
   setOpen: () => void;
@@ -15,14 +14,10 @@ export const Navbar = ({ setOpen }: NavbarProps) => {
       <div className="flex flex-wrap w-full justify-between">
         <div className="flex items-center gap-5">
           <BurgerMenu onClick={setOpen} />
-          <Link to="/" className="flex gap-2 sm:gap-6 items-center">
-            <img className="w-8 md:w-10" src={logo} alt="" />
-            <h1 className="text-2xl sm:text-4xl text-gray-900 dark:text-white uppercase font-bold">
-              ADMIN
-            </h1>
-          </Link>
         </div>
+        <DeadlineTime />
         <div className="flex items-center">
+          <Notifications />
           <ModeChange />
           <LanguageSelect />
           <ProfileActions />

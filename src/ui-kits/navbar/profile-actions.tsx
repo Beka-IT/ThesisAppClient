@@ -1,43 +1,36 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from 'src/hooks';
-import { logOut } from 'src/store/reducers/auth-slice';
-import { useSessionStorage } from 'src/hooks';
 import { IconUserCircle } from '@tabler/icons-react';
 import { ChangePassword } from 'src/components';
+import { Modal, Popover, UnstyledButton } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { useCookie } from 'src/hooks';
 
 export const ProfileActions = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const { removeItem: removeProfile } = useSessionStorage('profile');
-
-  const [open, setOpen] = useState<boolean>(false);
-  const [changePasswordOpen, setChangePasswordOpen] = useState<boolean>(false);
-
+  const [opened, { toggle }] = useDisclosure()
+  const cookie = useCookie("profile")
   const handleOpen = () => {
-    setChangePasswordOpen(true);
-    setOpen(false);
+    toggle();
   };
 
   const handleLogout = async () => {
-    removeProfile();
-    navigate('/sign-in');
-    dispatch({ type: logOut.type });
+    navigate('/');
+    cookie.removeCookie()
   };
 
   const actions = [
     {
-      title: t`profile`,
+      title: t("profile"),
       onClick: () => navigate(`/profile`),
     },
     {
-      title: t`changePassword`,
+      title: t("changePassword"),
       onClick: () => handleOpen(),
     },
     {
-      title: t`logout`,
+      title: t("logout"),
       onClick: handleLogout,
     },
   ];
@@ -45,26 +38,27 @@ export const ProfileActions = () => {
   return (
     <>
       <div className="relative">
-        <div onClick={() => setOpen((prev) => !prev)}>
-          <IconUserCircle
-            size={30}
-            className="text-gray-900 cursor-pointer dark:text-white"
-          />
-        </div>
-        {open && (
-          <nav className="absolute bg-gray-900 text-white px-4 py-5 right-0 top-10 flex flex-col gap-3 items-start font-medium">
-            {actions.map((el) => (
-              <button key={el.title} onClick={el.onClick}>
-                {el.title}
-              </button>
-            ))}
-          </nav>
-        )}
+        <Popover width={200} position="bottom" withArrow shadow="md">
+          <Popover.Target>
+            <IconUserCircle color="grey"
+              style={{ cursor: "pointer" }} size={34} />
+          </Popover.Target>
+          <Popover.Dropdown>
+            <>
+              {actions?.map(el => (
+                <UnstyledButton key={el.title} py={6} onClick={el.onClick}>
+                  {el.title}
+                </UnstyledButton>
+              ))}
+            </>
+          </Popover.Dropdown>
+        </Popover>
       </div>
-      {changePasswordOpen && (
-        <ChangePassword setHidden={setChangePasswordOpen} />
-      )}
-      {}
+      <Modal
+        centered withCloseButton={false}
+        opened={opened} onClose={toggle}>
+        <ChangePassword toggle={toggle} />
+      </Modal>
     </>
   );
 };
