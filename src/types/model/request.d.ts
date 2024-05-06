@@ -8,5 +8,11 @@ declare type RequestRequest = {
 }
 
 declare type RequestRespone = {
-
+    id: number;
+    titleKg: string;
+    titleTr: string;
+    descriptionKg: string;
+    descriptionTr: string;
+    curatorId: number;
+    isMyTheme: boolean;
 }

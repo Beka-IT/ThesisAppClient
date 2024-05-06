@@ -1,8 +1,7 @@
 import { ModeChange } from '../mode-change';
 import { ProfileActions } from './profile-actions';
-import { DeadlineTime, LanguageSelect } from 'src/components';
+import { DeadlineTime, LanguageSelect, Notifications } from 'src/components';
 import { BurgerMenu } from './burger-menu';
-import { Notifications } from '@mantine/notifications';
 
 interface NavbarProps {
   setOpen: () => void;
@@ -17,10 +16,10 @@ export const Navbar = ({ setOpen }: NavbarProps) => {
         </div>
         <DeadlineTime />
         <div className="flex items-center">
-          <Notifications />
           <ModeChange />
           <LanguageSelect />
           <ProfileActions />
+          <Notifications />
         </div>
       </div>
     </header>
