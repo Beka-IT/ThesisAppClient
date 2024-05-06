@@ -1,8 +1,10 @@
-import { Button, PasswordInput, TextInput } from '@mantine/core';
+import { Button, Modal, PasswordInput, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useEffect } from 'react';
+import { useDisclosure } from '@mantine/hooks';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
+import { VerifyCode } from 'src/components';
 import { useCookie } from 'src/hooks';
 import { useLoginMutation } from 'src/store';
 import { notify } from 'src/utils';
@@ -11,17 +13,19 @@ export const SignIn = () => {
   const { t } = useTranslation();
   const navigate = useNavigate()
   const [login] = useLoginMutation()
+  const [opened, { toggle }] = useDisclosure()
   const cookie = useCookie("profile")
   function isValidEmail(email: string) {
-    return /\S+@manas\.edu\.kg$/.test(email);
+    const res = /\S+@manas\.edu\.kg$/.test(email)
+    return !res && t("incorrect-email");
   }
   const form = useForm({
     initialValues: {
-      email: "2308.01012@manas.edu.kg",
+      email: "@manas.edu.kg",
       password: "123123"
     },
     validate: {
-      // email: (value) => isValidEmail(value),
+      email: (value) => isValidEmail(value),
       password: (value) => !value
     }
   })
@@ -29,12 +33,20 @@ export const SignIn = () => {
     try {
       const res = await login(values).unwrap();
       cookie.setCookie(res)
-      notify(true, t("wellcome"))
-      navigate("/thesis")
+      if (!res.isVerified) {
+        toggle()
+      } else {
+        navigate("/thesis")
+        notify(true, t("wellcome"))
+      }
     } catch (error) {
       notify(false, t("login-error"))
     }
   }
+
+
+
+
   useEffect(() => {
     const profile = cookie.getCookie()
     if (profile) {
@@ -82,6 +94,12 @@ export const SignIn = () => {
           </div>
         </div>
       </div>
+      <Modal
+        withCloseButton={false}
+        closeOnClickOutside={false}
+        centered opened={opened} onClose={toggle}>
+        <VerifyCode toggle={toggle} />
+      </Modal>
     </section>
   );
 };

@@ -25,6 +25,7 @@ export const VerifyCode = ({ toggle }: Props) => {
         if ("data" in res) {
           if (res.data) {
             notify(true, t("verified"))
+            notify(true, t("wellcome"))
             toggle()
           } else {
             notify(false, t("incorrect-code"))
