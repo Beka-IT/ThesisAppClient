@@ -15,7 +15,7 @@ export class Path {
   }
   static Teachers = class {
     static getMyTeachers = createApi("users/getMyTeachers")
-    static getDepartmentsTeachers = (id: number | string) => createApi(`users/getDepartmentTeachers?departmentId=${id}`)
+    static getDepartmentsTeachers = (id: number | string | null) => createApi(`users/getDepartmentTeachers?departmentId=${id}`)
     static chooseTeacher = (id: number | string) => createApi(`users/chooseTeacher?teacherId=${id}`)
     static setDepartmentAdminRole = (id: number | string) => createApi(`users/setDepartmentAdminRole?teacherId=${id}`)
   }

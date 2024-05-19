@@ -2,7 +2,12 @@ import { Card, Flex, Grid, Popover, Text, Title } from '@mantine/core'
 import { IconChecks, IconDots, IconTrash, IconTrendingUp } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { useCookie } from 'src/hooks'
-import { useChooseTeacherMutation, useGetDepartmentsTeachersQuery, useSetDepartmentAdminRoleMutation, useUserDeleteMutation } from 'src/store'
+import {
+    useChooseTeacherMutation,
+    useGetDepartmentsTeachersQuery,
+    useSetDepartmentAdminRoleMutation,
+    useUserDeleteMutation
+} from 'src/store'
 import { RolesEnum } from 'src/types'
 import { CustomAppShell } from 'src/ui-kits'
 import CustomLoader from 'src/ui-kits/custom-loader'
@@ -10,7 +15,7 @@ import { notify } from 'src/utils'
 
 export const TeachersPage = () => {
     const profile = useCookie<Profile>("profile").getCookie()
-    const { data, isLoading } = useGetDepartmentsTeachersQuery(profile?.departmentId || 0)
+    const { data, isLoading } = useGetDepartmentsTeachersQuery(profile?.departmentId || null)
     return (
         <CustomAppShell>
             <Grid w="96%">
