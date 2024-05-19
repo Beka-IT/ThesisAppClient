@@ -5,9 +5,10 @@ import { useTheme } from './utils/theme-provider';
 import { useCookie } from './hooks';
 
 export const App = () => {
-  const { state, dispatch } = useTheme();
+  const { state } = useTheme();
   const profile = useCookie<Profile>("profile").getCookie()
   const role = profile?.role
+
   return (
     <div className={`${state.theme}`}>
       <Routes>

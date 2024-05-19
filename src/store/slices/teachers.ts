@@ -9,7 +9,7 @@ export const teachersApi = apiSlice.injectEndpoints({
                 method: "GET",
             }),
         }),
-        getDepartmentsTeachers: builder.query<Teacher[], string | number | null>({
+        getDepartmentsTeachers: builder.query<Teacher[], string | number | null | undefined>({
             query: (id) => ({
                 url: Path.Teachers.getDepartmentsTeachers(id),
                 method: "GET",

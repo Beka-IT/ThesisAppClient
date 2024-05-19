@@ -15,7 +15,8 @@ import { notify } from 'src/utils'
 
 export const TeachersPage = () => {
     const profile = useCookie<Profile>("profile").getCookie()
-    const { data, isLoading } = useGetDepartmentsTeachersQuery(profile?.departmentId || null)
+    const role = profile?.role
+    const { data, isLoading } = useGetDepartmentsTeachersQuery(role === RolesEnum.ADMIN ? null : profile?.departmentId)
     return (
         <CustomAppShell>
             <Grid w="96%">

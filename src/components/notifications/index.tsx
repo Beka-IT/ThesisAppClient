@@ -5,7 +5,10 @@ import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { useCookie } from "src/hooks"
 import { getTitleByLanguage } from "src/locales"
-import { useGetAllNotificationsQuery, useToReadNotificationMutation } from "src/store/slices/notification-api"
+import {
+    useGetAllNotificationsQuery,
+    useToReadNotificationMutation
+} from "src/store/slices/notification-api"
 import { NotificationType } from "src/types"
 import CustomLoader from "src/ui-kits/custom-loader"
 import { DateTime, notify } from "src/utils"
@@ -27,7 +30,7 @@ export const Notifications = () => {
     return (
         <>
             <UnstyledButton mx={10} onClick={toggle}>
-                <IconBellFilled />
+                <IconBellFilled style={{ color: "green" }} />
             </UnstyledButton>
             <Drawer position="right" onClose={toggle} opened={opened}>
                 <Grid gutter={10}>

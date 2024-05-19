@@ -15,6 +15,7 @@ export const StudentsPage = () => {
     const role = profile?.role
     const loading = myStudentsLoading || allStudentsLoading
     const data = role === RolesEnum.ADMIN ? allStudents : myStudents
+
     return (
         <CustomAppShell>
             <Grid w="96%">
@@ -22,7 +23,8 @@ export const StudentsPage = () => {
                     <Grid.Col span={12}>
                         <CustomLoader />
                     </Grid.Col> :
-                    data?.map(item => <StudentCard key={item.id} item={item} />)}
+                    data?.map(item =>
+                        <StudentCard key={item.id} item={item} />)}
             </Grid>
         </CustomAppShell>
     )

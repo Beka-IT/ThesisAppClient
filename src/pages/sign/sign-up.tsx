@@ -25,10 +25,18 @@ export const SignUp = () => {
     label: el.title,
     value: `${el.id}`
   }))
+  const validateEmail = (value: string) => {
+    const emailRegex = /@manas\.edu\.kg$/;
+
+    if (!emailRegex.test(value)) {
+      return true;
+    }
+    return false;
+  }
   const form = useForm({
     initialValues,
     validate: {
-      email: (value) => !value,
+      // email: (value) => validateEmail(value),
       password: (value) => !value,
       firstname: (value) => !value,
       lastname: (value) => !value,
@@ -52,8 +60,7 @@ export const SignUp = () => {
       notify(true, t("registered"))
       navigate("/sign-in")
     } catch (error) {
-      console.error(error)
-      notify(false)
+      notify(false, t("error"))
     }
   }
 
