@@ -4,3 +4,4 @@ export * from "./teachers"
 export * from "./students"
 export * from "./thesis"
 export * from "./deadline"
+export * from './requests'

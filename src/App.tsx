@@ -2,10 +2,12 @@ import { Route, Routes } from 'react-router-dom';
 import { routes } from './route-config';
 import { Layout } from './ui-kits';
 import { useTheme } from './utils/theme-provider';
+import { useCookie } from './hooks';
 
 export const App = () => {
-  const role = undefined
   const { state, dispatch } = useTheme();
+  const profile = useCookie<Profile>("profile").getCookie()
+  const role = profile?.role
   return (
     <div className={`${state.theme}`}>
       <Routes>

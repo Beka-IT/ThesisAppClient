@@ -1,17 +1,24 @@
 import { Card, Flex, Grid, Popover, Text, Title } from "@mantine/core"
 import { IconDots, IconTrash } from "@tabler/icons-react"
 import { useTranslation } from "react-i18next"
-import { useGetAllStudentsQuery, useUserDeleteMutation } from "src/store"
+import { useCookie } from "src/hooks"
+import { useGetAllStudentsQuery, useGetMyStudentsQuery, useUserDeleteMutation } from "src/store"
+import { RolesEnum } from "src/types"
 import { CustomAppShell } from "src/ui-kits"
 import CustomLoader from "src/ui-kits/custom-loader"
 import { notify } from "src/utils"
 
 export const StudentsPage = () => {
-    const { data, isLoading } = useGetAllStudentsQuery({})
+    const { data: allStudents, isLoading: allStudentsLoading } = useGetAllStudentsQuery({})
+    const { data: myStudents, isLoading: myStudentsLoading } = useGetMyStudentsQuery({})
+    const profile = useCookie<Profile>("profile").getCookie()
+    const role = profile?.role
+    const loading = myStudentsLoading || allStudentsLoading
+    const data = role === RolesEnum.ADMIN ? allStudents : myStudents
     return (
         <CustomAppShell>
             <Grid w="96%">
-                {isLoading && !data ?
+                {loading ?
                     <Grid.Col span={12}>
                         <CustomLoader />
                     </Grid.Col> :
@@ -28,7 +35,8 @@ type Props = {
 const StudentCard = ({ item }: Props) => {
     const { t } = useTranslation()
     const [deleteStudent] = useUserDeleteMutation()
-
+    const profile = useCookie<Profile>("profile").getCookie()
+    const role = profile?.role
     const handleDelete = async () => {
         try {
             await deleteStudent(item.id).unwrap()
@@ -37,35 +45,42 @@ const StudentCard = ({ item }: Props) => {
             notify(false, t("cant-delete"))
         }
     }
-    const actions = [
-        {
-            label: t("delete"),
-            icon: <IconTrash color="red" size={24} />,
-            onclick: handleDelete
-        },
-    ]
+    const deleteAction = {
+        label: t("delete"),
+        icon: <IconTrash color="red" size={24} />,
+        onclick: handleDelete
+    }
+    const actions = () => {
+        switch (role) {
+            case RolesEnum.DEPARTMENT_ADMIN:
+                return [deleteAction]
+            default:
+                return []
+        }
+    }
     return (
         <Grid.Col span={{ base: 12, md: 6, xl: 4 }}>
             <Card maw="100%" shadow='lg'>
                 <Flex w="100%" justify="end">
-                    <Popover position="bottom-end">
-                        <Popover.Target>
-                            <IconDots style={{ cursor: "pointer" }} />
-                        </Popover.Target>
-                        <Popover.Dropdown>
-                            <Flex direction="column" >
-                                {actions?.map(el => (
-                                    <Flex gap={5}
-                                        style={{ cursor: "pointer" }}
-                                        py={5}
-                                        onClick={el.onclick}>
-                                        {el.icon}
-                                        <Text fz={16}>{el.label}</Text>
-                                    </Flex>
-                                ))}
-                            </Flex>
-                        </Popover.Dropdown>
-                    </Popover>
+                    {actions()?.length ?
+                        <Popover position="bottom-end">
+                            <Popover.Target>
+                                <IconDots style={{ cursor: "pointer" }} />
+                            </Popover.Target>
+                            <Popover.Dropdown>
+                                <Flex direction="column" >
+                                    {actions()?.map(el => (
+                                        <Flex gap={5}
+                                            style={{ cursor: "pointer" }}
+                                            py={5}
+                                            onClick={el.onclick}>
+                                            {el.icon}
+                                            <Text fz={16}>{el.label}</Text>
+                                        </Flex>
+                                    ))}
+                                </Flex>
+                            </Popover.Dropdown>
+                        </Popover> : null}
                 </Flex>
                 <Flex direction="column" gap={4}>
                     <div>

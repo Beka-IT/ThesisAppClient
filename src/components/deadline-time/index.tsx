@@ -1,28 +1,39 @@
 import { Title } from "@mantine/core"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
+import { useCookie } from "src/hooks"
 import { useGetDeadlineQuery } from "src/store"
 import { getBelowDateTime } from "src/utils"
 
+type DeadLineTime = {
+    days: number;
+    minutes: number;
+    hours: number;
+    seconds: number;
+}
 
 export const DeadlineTime = () => {
-    const [state, setState] = useState({ days: "00", hours: "00", minutes: "00", seconds: "00" })
     const { data } = useGetDeadlineQuery({})
     const { t } = useTranslation()
+    const reDate = new Date()
+    const profile = useCookie<Profile>("profile").getCookie()
+    const deadline = profile?.deadline
+    const [state, setState] = useState<DeadLineTime>(getBelowDateTime(deadline || reDate))
 
     useEffect(() => {
         setInterval(() => {
-            const res = getBelowDateTime(data?.endDate || new Date(), t)
+            const res = getBelowDateTime(deadline || reDate)
             setState(res)
-        }, 1000)
+        }, 60000)
     }, [data])
     return (
         <div>
             <Title fz={{ base: 24, md: 32 }} className="dark:text-white">
-                <span style={{ color: "grey" }}>{state.days}-{t("days")} </span>
-                <span>{state.hours}:</span>
-                <span>{state.minutes}:</span>
-                <span>{state.seconds.length < 2 ? `0${state.seconds}` : state.seconds}</span>
+                <span style={{ color: "grey", width: "120px", margin: "0 10px" }}>
+                    {state.days}-{t("days")}
+                </span>
+                <span style={{ width: '100px' }}>{state.hours}:</span>
+                <span style={{ width: '100px' }}>{state.minutes}</span>
             </Title>
         </div>
     )

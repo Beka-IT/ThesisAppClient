@@ -19,18 +19,30 @@ declare type Profile = {
     departmentId: number;
     isVerified: boolean;
     phoneNumber; string;
-    role: number;
+    role: Roles;
     token: string;
     deadline: Date | string;
     chosenThesisId: null;
     unreadNotificationsCount: number;
 }
-
+declare type Roles =
+    RolesEnum.ADMIN
+    | RolesEnum.DEPARTMENT_ADMIN
+    | RolesEnum.STUDENT
+    | RolesEnum.TEACHER
+    | undefined
+declare enum RolesEnum {
+    ADMIN = 4,
+    STUDENT = 1,
+    TEACHER = 2,
+    DEPARTMENT_ADMIN = 3
+}
 
 declare type Menu = {
     title: string;
     icon: any;
-    path: string
+    path: string;
+    roles: any[]
 }
 
 declare type RegistrationType = {

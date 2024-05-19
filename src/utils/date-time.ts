@@ -8,7 +8,7 @@ export class DateTime {
 }
 
 
-export const getBelowDateTime = (deadlineString: string | Date, t: (s: string) => string) => {
+export const getBelowDateTime = (deadlineString: string | Date) => {
     let deadline = new Date(deadlineString);
     let now = new Date();
 
@@ -28,10 +28,12 @@ export const getBelowDateTime = (deadlineString: string | Date, t: (s: string) =
         Math.round
             ((Difference_In_Time / (1000)) % 60);
 
-    return {
-        days: `${days}`,
-        hours: `${hours}`,
-        minutes: `${minutes}`,
-        seconds: `${seconds}`
+    const res = {
+        days,
+        hours,
+        minutes,
+        seconds
     }
+    console.log(res, "res")
+    return res
 }

@@ -3,6 +3,7 @@ import { IconChecks, IconDots, IconTrash, IconTrendingUp } from '@tabler/icons-r
 import { useTranslation } from 'react-i18next'
 import { useCookie } from 'src/hooks'
 import { useChooseTeacherMutation, useGetDepartmentsTeachersQuery, useSetDepartmentAdminRoleMutation, useUserDeleteMutation } from 'src/store'
+import { RolesEnum } from 'src/types'
 import { CustomAppShell } from 'src/ui-kits'
 import CustomLoader from 'src/ui-kits/custom-loader'
 import { notify } from 'src/utils'
@@ -32,8 +33,9 @@ const TeacherCard = ({ item }: Props) => {
     const { t } = useTranslation()
     const [chooseTeacher] = useChooseTeacherMutation()
     const [setToAdminRole] = useSetDepartmentAdminRoleMutation()
-    const [deleteStudent] = useUserDeleteMutation()
-
+    const [deleteTeacher] = useUserDeleteMutation()
+    const profile = useCookie<Profile>("profile").getCookie()
+    const role = profile?.role
     const handleChoose = async () => {
         try {
             await chooseTeacher(item.id).unwrap()
@@ -54,30 +56,42 @@ const TeacherCard = ({ item }: Props) => {
 
     const handleDelete = async () => {
         try {
-            await deleteStudent(item.id).unwrap()
+            await deleteTeacher(item.id).unwrap()
             notify(true, t("deleted"))
         } catch (error) {
             notify(false, t("cant-delete"))
         }
     }
-    const actions = [
-        {
-            label: t("choose"),
-            icon: <IconChecks color="green" size={24} />,
-            onclick: handleChoose
-        },
-        {
-            label: t("to-department-admin"),
-            icon: <IconTrendingUp color="green" size={24} />,
-            onclick: handleToDepartmentAdmin
-        },
-        {
-            label: t("delete"),
-            icon: <IconTrash color="red" size={24} />,
-            onclick: handleDelete
-        },
-    ]
 
+    const chooseLikeCuratorAction = {
+        label: t("choose"),
+        icon: <IconChecks color="green" size={24} />,
+        onclick: handleChoose
+    }
+    const toDepartmentAdminAction = {
+        label: t("to-department-admin"),
+        icon: <IconTrendingUp color="green" size={24} />,
+        onclick: handleToDepartmentAdmin
+    }
+    const deleteAction = {
+        label: t("delete"),
+        icon: <IconTrash color="red" size={24} />,
+        onclick: handleDelete
+    }
+    const actions = (role?: Roles) => {
+        switch (role) {
+            case RolesEnum.ADMIN:
+                return [toDepartmentAdminAction, deleteAction]
+            case RolesEnum.DEPARTMENT_ADMIN:
+                return [deleteAction]
+            case RolesEnum.TEACHER:
+                return []
+            case RolesEnum.STUDENT:
+                return [chooseLikeCuratorAction]
+            default:
+                return []
+        }
+    }
     return (
         <Grid.Col span={{ base: 12, md: 6, xl: 4 }}>
             <Card maw="100%" shadow='lg'>
@@ -88,7 +102,7 @@ const TeacherCard = ({ item }: Props) => {
                         </Popover.Target>
                         <Popover.Dropdown>
                             <Flex direction="column" >
-                                {actions?.map(el => (
+                                {actions(role)?.map(el => (
                                     <Flex gap={5}
                                         style={{ cursor: "pointer" }}
                                         py={5}

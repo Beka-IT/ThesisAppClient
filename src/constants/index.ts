@@ -1,1 +1,1 @@
-export const BASE_API = process.env.REACT_TEST_API || "http://192.168.10.132:5001"
+export const BASE_API = process.env.REACT_TEST_API || "http://192.168.1.194:5001"

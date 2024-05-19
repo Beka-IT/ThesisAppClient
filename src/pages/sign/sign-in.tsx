@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCookie } from 'src/hooks';
+import { routes } from 'src/route-config';
 import { useLoginMutation } from 'src/store';
 import { notify } from 'src/utils';
 
@@ -11,7 +12,8 @@ export const SignIn = () => {
   const { t } = useTranslation();
   const navigate = useNavigate()
   const [login] = useLoginMutation()
-  const cookie = useCookie("profile")
+  const cookie = useCookie<Profile>("profile")
+
   function isValidEmail(email: string) {
     return /\S+@manas\.edu\.kg$/.test(email);
   }
@@ -29,8 +31,10 @@ export const SignIn = () => {
     try {
       const res = await login(values).unwrap();
       cookie.setCookie(res)
+      const role = res?.role
+      const pages = routes?.filter(el => el.roles.includes(role))
       notify(true, t("wellcome"))
-      navigate("/thesis")
+      navigate(pages[2]?.path)
     } catch (error) {
       notify(false, t("login-error"))
     }
@@ -38,7 +42,9 @@ export const SignIn = () => {
   useEffect(() => {
     const profile = cookie.getCookie()
     if (profile) {
-      navigate("/thesis")
+      const role = profile?.role
+      const pages = routes?.filter(el => el.roles.includes(role))
+      navigate(pages[0]?.path)
     }
   }, [])
   return (
@@ -52,6 +58,7 @@ export const SignIn = () => {
             <form onSubmit={form.onSubmit(values => handleSubmit(values))} className="space-y-4 md:space-y-6">
               <div>
                 <TextInput
+                  labelProps={{ class: "text-black dark:text-white" }}
                   {...form.getInputProps("email")}
                   error={form.errors.email}
                   label={t('email')}
@@ -59,6 +66,7 @@ export const SignIn = () => {
               </div>
               <div>
                 <PasswordInput
+                  labelProps={{ class: "text-black dark:text-white" }}
                   {...form.getInputProps("password")}
                   label={t('password')}
                 />

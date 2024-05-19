@@ -9,5 +9,10 @@ export { CreateThesis } from "./thesis/create"
 export { TeachersPage } from "./teachers"
 export { StudentsPage } from "./students"
 export { DeadlinePage } from "./deadline"
-export { RequestThesisPage } from "./request-thesis"
+
 export { ProfilePage } from "./profile"
+
+export { RequestThesisPage } from "./request-thesis"
+export { RequestDetail } from "./request-thesis/detail"
+export { EditRequest } from "./request-thesis/edit"
+export { CreateRequest } from "./request-thesis/create"
