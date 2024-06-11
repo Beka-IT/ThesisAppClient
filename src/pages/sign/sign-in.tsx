@@ -1,10 +1,10 @@
 import { Button, Modal, PasswordInput, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-import { VerifyCode } from 'src/components';
+import { LanguageSelect, VerifyCode } from 'src/components';
 import { useCookie } from 'src/hooks';
 import { useLoginMutation } from 'src/store';
 import { notify } from 'src/utils';
@@ -58,6 +58,7 @@ export const SignIn = () => {
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <LanguageSelect />
             <h3 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white h-16">
               {t('app-title')}
             </h3>
