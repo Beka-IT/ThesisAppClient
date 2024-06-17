@@ -36,3 +36,22 @@ declare type ThesisCreateRequest = {
 declare type ThesisUpdateRequest = {
 
 }
+
+
+declare type ReportItem = {
+    curatorFirstname: string
+​    ​curatorId:    number
+​    curatorLastname:   string
+​        ​​students:{
+        studentFirstname: string
+        ​​studentId: number
+        ​​​​​studentLastname: string
+    }[]
+​    ​​thesisId:string
+​    ​​thesisTitleKg: string
+​    ​​thesisTitleTr:string 
+}
+
+declare type ReportRes = {
+    reportItems: ReportItem[]
+}

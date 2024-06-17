@@ -7,13 +7,12 @@ export class Path {
     static resetPassword = createApi('users/resetPassword');
     static confirmation = createApi('users/confirmation');
     static delete = (id: number | string) => createApi(`users/delete?id=${id}`);
-
   };
   static Faculties = class {
     static getFaculties = createApi("faculties/getFaculties")
     static getDepartaments = (id: number | string) => createApi(`faculties/getDepartments?facultyId=${id}`)
   }
-  static Teachers = class {
+  static Teachers = class { 
     static getMyTeachers = createApi("users/getMyTeachers")
     static getDepartmentsTeachers = (id: number | string) => createApi(`users/getDepartmentTeachers?departmentId=${id}`)
     static chooseTeacher = (id: number | string) => createApi(`users/chooseTeacher?teacherId=${id}`)
@@ -27,6 +26,7 @@ export class Path {
     static getAll = createApi("Thesis/GetAll")
     static create = createApi("thesis/create")
     static update = createApi("thesis/update")
+    static getReport = createApi("thesis/GetReport/")
     static get = (id: number | string) => createApi(`thesis/get?id=${id}`)
     static choose = (id: number | string) => createApi(`thesis/choose?id=${id}`)
     static toggleIsChosenStatus = (id: number | string) => createApi(`thesis/toggleIsChosenStatus?id=${id}`)

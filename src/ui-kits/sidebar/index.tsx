@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Links } from '../links';
-import { IconFolderQuestion, IconHourglassHigh, IconNotes, IconUsers } from '@tabler/icons-react';
+import { IconFolderQuestion, IconHourglassHigh, IconNotes, IconUsers, IconWallpaper } from '@tabler/icons-react';
 
 interface SideBarProps {
     open: boolean;
@@ -36,6 +36,11 @@ const getMenu: getMenuType = (t) => {
             path: "/request-thesis",
             title: t("request-thesis")
         },
+        {
+            icon: <IconWallpaper />,
+            path: "/report",
+            title: t("report")
+        },
     ]
 }
 
@@ -47,7 +52,7 @@ export const Sidebar = ({ open, setOpened }: SideBarProps) => {
 
     return (
         <div
-            className={`w-full justify-start items-start h-screen bg-gray-200 dark:bg-gray-800 flex shadow-2xl shadow-slate-400 dark:shadow-slate-600`}
+            className={`w-full  justify-start items-start h-screen bg-gray-200 dark:bg-gray-800 flex shadow-2xl shadow-slate-400 dark:shadow-slate-600`}
         >
             <nav className="flex flex-col pt-5">{links}</nav>
         </div>

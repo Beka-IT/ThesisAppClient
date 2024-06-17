@@ -21,7 +21,7 @@ export const SignIn = () => {
   }
   const form = useForm({
     initialValues: {
-      email: "@manas.edu.kg",
+      email: "1904.01028@manas.edu.kg",
       password: "123123"
     },
     validate: {

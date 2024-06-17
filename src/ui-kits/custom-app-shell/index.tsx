@@ -15,12 +15,12 @@ export const CustomAppShell = ({ children }: AppShellProps) => {
   };
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-gray-50 dark:bg-gray-700">
+    <div className="h-screen w-screen  overflow-hidden bg-gray-50 dark:bg-gray-700">
       <div>
         <Navbar setOpen={toggleMenu} />
       </div>
       <div className="flex gap-3 h-[87%]">
-        <div className={`${opened ? 'w-80' : 'w-20'} duration-300`}>
+        <div className={`${opened ? 'w-96' : 'w-20'} duration-300`}>
           <Sidebar open={opened} setOpened={setOpened} />
         </div>
         <div className="h-full -pl-2 pt-2 pr-2 md:pl-1 md:pt-4 md:pr-4 w-full ">

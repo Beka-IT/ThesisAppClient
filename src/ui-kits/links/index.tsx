@@ -29,7 +29,7 @@ export const Links = ({ icon, path, title, open, onClick }: LinksProps) => {
                     </Tooltip>
                 }
                 {open && (
-                    <Title lh={1.4} fz={{ base: 16, md: 18 }}>
+                    <Title lh={1.4} fz={{ base: 14, sm: 16, xl: 18 }}>
                         {title}
                     </Title>
                 )}

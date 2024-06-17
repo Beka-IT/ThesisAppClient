@@ -30,6 +30,12 @@ export const thesisApi = apiSlice.injectEndpoints({
                 body
             }),
         }),
+        getReport: builder.query<ReportRes, unknown>({
+            query: () => ({
+                url: Path.Thesis.getReport,
+                method: "GET",
+            }),
+        }),
         chooseThesis: builder.mutation<Thesis, string | number>({
             query: (id) => ({
                 url: Path.Thesis.choose(id),
@@ -58,5 +64,6 @@ export const {
     useCreateThesisMutation,
     useDeleteThesisMutation,
     useToggleisChosenStatusMutation,
-    useUpdateThesisMutation
+    useUpdateThesisMutation,
+    useGetReportQuery
 } = thesisApi

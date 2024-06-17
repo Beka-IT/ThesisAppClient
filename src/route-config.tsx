@@ -11,7 +11,8 @@ import {
   ThesisDetail,
   CreateThesis,
   EditThesis,
-  ThesisRequestDetail
+  ThesisRequestDetail,
+  TableReport
 } from './pages';
 import { Roles, type RolesType } from './types/model/roles';
 export interface RouteData {
@@ -45,6 +46,11 @@ export const routes: RouteData[] = [
   {
     path: '/thesis/:id',
     page: <ThesisDetail />,
+    roles: [undefined],
+  },
+  {
+    path: '/report',
+    page: <TableReport />,
     roles: [undefined],
   },
   {
