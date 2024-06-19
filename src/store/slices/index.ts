@@ -4,6 +4,6 @@ export * from "./teachers"
 export * from "./students"
 export * from "./thesis"
 export * from "./deadline"
-export * from "./notifications"
+export * from "./notification-api"
 export * from "./requests"
 export * from './requests'

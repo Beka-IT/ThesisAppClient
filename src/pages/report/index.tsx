@@ -22,18 +22,14 @@ export const TableReport = () => {
       }),
       `${item.curatorFirstname} ${item.curatorLastname}`,
       item.students?.map((student) => `${student.studentFirstname} ${student.studentLastname};`).toString() || ""
-    ])) || [
-        ["Катачылык кетти!", "Катачылык кетти!", ["Катачылык кетти!;", "Катачылык кетти!;", "Катачылык кетти!;"].toString()],
-        ["Катачылык кетти!", "Катачылык кетти!", ["Катачылык кетти!;", "Катачылык кетти!;", "Катачылык кетти!;"].toString()],
-        ["Катачылык кетти!", "Катачылык кетти!", ["Катачылык кетти!;", "Катачылык кетти!;", "Катачылык кетти!;"].toString()],
-        ["Катачылык кетти!", "Катачылык кетти!", ["Катачылык кетти!;", "Катачылык кетти!;", "Катачылык кетти!;"].toString()],
-      ]
+    ])) || []
   }, [data])
   const handleDownload = () => {
     try {
       downloadExcel({
         fileName: "Дипломдук иштер боюнча отчёт",
         sheet: "report",
+
         tablePayload: {
           header,
           body: body,
