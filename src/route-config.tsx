@@ -22,7 +22,6 @@ export interface RouteData {
 }
 
 export const routes: RouteData[] = [
-
   {
     path: '/',
     page: <SignIn />,
