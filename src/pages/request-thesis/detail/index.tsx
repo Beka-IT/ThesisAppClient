@@ -5,6 +5,8 @@ import { useTranslation } from "react-i18next"
 import { Link, useParams } from "react-router-dom"
 import { getTitleByLanguage } from "src/locales"
 import { useGetRequestQuery } from "src/store"
+import { useCookie } from "src/hooks"
+import { RolesEnum } from "src/types"
 import { CustomAppShell } from "src/ui-kits"
 import CustomLoader from "src/ui-kits/custom-loader"
 
@@ -18,14 +20,16 @@ export const ThesisRequestDetail = () => {
     const { data, isLoading } = useGetRequestQuery(id || 1, {
         refetchOnMountOrArgChange: !!id
     })
-
+    const profile = useCookie<Profile>("profile").getCookie()
+    const role = profile?.role
     return (
         <CustomAppShell>
-            <Flex w="100%" mb={30} style={{ borderBottom: "1px solid rgba(39,39,39, 0.3)" }} py={10}>
-                <Button bg="baseDark" component={Link} to={`/thesis/${id}/edit`}>
-                    {t("edit")}
-                </Button>
-            </Flex>
+            {role === RolesEnum.STUDENT &&
+                <Flex w="100%" mb={30} style={{ borderBottom: "1px solid rgba(39,39,39, 0.3)" }} py={10}>
+                    <Button bg="baseDark" component={Link} to={`/request-thesis/${id}/edit`}>
+                        {t("edit")}
+                    </Button>
+                </Flex>}
             <Grid className="dark:text-white">
                 {isLoading ? (
                     <Grid.Col>
@@ -59,7 +63,17 @@ export const ThesisRequestDetail = () => {
                         </Grid.Col>
                         <Grid.Col span={{ base: 12, md: 6 }}>
                             <Text fz={{ base: 16, md: 20 }}>
-                                {t("isMyTheme")}
+                                {t("creater-fullname")}
+                            </Text>
+                            <Title style={{ wordWrap: "break-word" }}
+                                textWrap="wrap" lh={1.2}
+                                fz={{ base: 22, md: 26 }}>
+                                {data?.studentLastname} {data?.studentFirstname} {data?.studentPatronomyc}
+                            </Title>
+                        </Grid.Col>
+                        <Grid.Col span={{ base: 12, md: 6 }}>
+                            <Text fz={{ base: 16, md: 20 }}>
+                                {t("myTheme")}
                             </Text>
                             {data?.isMyTheme ?
                                 <IconCircleCheck color='green' size={35} />

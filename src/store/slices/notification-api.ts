@@ -2,7 +2,7 @@ import { Path } from "src/utils/path";
 import { apiSlice } from "src/store/apiSlice";
 import { NotificationType } from "src/types";
 
-export const notificationsApi = apiSlice.injectEndpoints({
+export const notificationApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getAllNotifications: builder.query<NotificationType[], unknown>({
             query: () => ({
@@ -16,10 +16,17 @@ export const notificationsApi = apiSlice.injectEndpoints({
                 method: "GET",
             }),
         }),
+        toReadNotification: builder.mutation<NotificationType, number | string>({
+            query: (id) => ({
+                url: Path.Notifications.get(id),
+                method: "GET",
+            }),
+        }),
     }),
 });
 
 export const {
     useGetAllNotificationsQuery,
-    useGetNotificationQuery
-} = notificationsApi;
+    useGetNotificationQuery,
+    useToReadNotificationMutation
+} = notificationApi;

@@ -1,59 +1,104 @@
-import { Flex, Grid, Image, Paper, Text, Title } from "@mantine/core"
-import { Box, Popover } from "@mantine/core"
-import { useCookie } from "src/hooks"
+import { Box, Card, Drawer, Flex, Grid, Modal, Text, Title, UnstyledButton } from "@mantine/core"
+import { useDisclosure } from "@mantine/hooks"
+import { IconBellFilled } from "@tabler/icons-react"
+import { useEffect } from "react"
+import { useTranslation } from "react-i18next"
 import { getTitleByLanguage } from "src/locales"
-import { useGetAllNotificationsQuery } from "src/store"
+import {
+    useGetAllNotificationsQuery,
+    useToReadNotificationMutation
+} from "src/store/slices/notification-api"
+import { NotificationType } from "src/types"
 import CustomLoader from "src/ui-kits/custom-loader"
-import { DateTime } from "src/utils"
+import { DateTime, notify } from "src/utils"
 
 export const Notifications = () => {
-    const profile = useCookie<Profile>("profile").getCookie()
-    const notificationsCount = profile?.unreadNotificationsCount
-    const { data, isLoading } = useGetAllNotificationsQuery({})
+    const [opened, { toggle }] = useDisclosure()
+    const { t } = useTranslation()
+    const { data, isLoading } = useGetAllNotificationsQuery({
+        refetchOnFocus: true,
+        refetchOnMount: true
+    })
+    useEffect(() => {
+        if (data) {
+            notify(true, `${t("notifications-count")}: ${data?.length}`)
+        }
+    }, [data])
     return (
-        <Popover>
-            <Popover.Target>
-                <Box style={{ cursor: "pointer" }} pos="relative">
-                    <Image w={25} src="/notification.svg" />
-                    {notificationsCount &&
-                        <div className="px-1 bg-teal-500 rounded-full text-center text-white text-sm absolute -top-3 -end-2">
-                            {notificationsCount}
-                            <div className="absolute top-0 start-0 rounded-full -z-10 animate-ping bg-teal-200 w-full h-full" ></div>
-                        </div>}
-                </Box>
-            </Popover.Target>
-            <Popover.Dropdown>
-                <Box p={10} h="80vh" w={250}>
-                    <Grid>
-                        {isLoading ?
-                            <Grid.Col span={12}>
-                                <CustomLoader />
-                            </Grid.Col> :
-                            data?.map(el => <NotificationItem key={el.id} data={el} />)
-                        }
-                    </Grid>
-                </Box>
-            </Popover.Dropdown>
-        </Popover>
+        <>
+            <UnstyledButton mx={10} onClick={toggle}>
+                <IconBellFilled style={{ color: "green" }} />
+            </UnstyledButton>
+            <Drawer position="right" onClose={toggle} opened={opened}>
+                <Grid gutter={10}>
+                    {isLoading ?
+                        <Grid.Col span={12}>
+                            <CustomLoader />
+                        </Grid.Col> :
+                        data?.map(el => <NotificationItem key={el.id} data={el} />)}
+                </Grid>
+            </Drawer>
+        </>
     )
 }
 
-type Props = {
-    data: NotificationType
-}
-
-const NotificationItem = ({ data }: Props) => {
+const NotificationItem = ({ data }: { data: NotificationType }) => {
     const date = DateTime.Format(data.createdAt)
+    const [opened, { toggle }] = useDisclosure()
+    const [toReadNotification, { data: notificaionDetail, isLoading }] = useToReadNotificationMutation()
+    const { t } = useTranslation()
+    const title = getTitleByLanguage(data)
+    const slicedTitle = title.length > 60 ? `${title.slice(0, 60)}...` : title
+
+
+    const handleReadMore = () => {
+        toggle()
+        toReadNotification(data.id)
+    }
+
+    const handleRead = async () => {
+        try {
+            await toReadNotification(data.id).unwrap()
+            notify(true, t("saved"))
+        } catch (error) {
+            notify(false, t("some-error"))
+        }
+    }
+
     return (
-        <Grid.Col span={12}>
-            <Paper w="100%" p={10} shadow="xl">
-                <Title fz={{ base: 18, md: 24 }}>
-                    {getTitleByLanguage(data)}
-                </Title>
-                <Flex justify="end">
-                    <Text>{date}</Text>
-                </Flex>
-            </Paper>
-        </Grid.Col>
+        <Grid.Col>
+            {isLoading ?
+                <Box>
+                    <CustomLoader />
+                </Box>
+                : <Card shadow="xs">
+                    <Text c={data?.isRead ? "gray" : "black"}>{date}</Text>
+                    <Title c={data?.isRead ? "gray" : "black"} lh={1.3} fz={18}>
+                        {slicedTitle}
+                    </Title>
+                    <Flex gap={20} mt={20} justify="end">
+                        <UnstyledButton onClick={handleReadMore} c="blue">
+                            {t("more")}
+                        </UnstyledButton>
+                        {!data.isRead &&
+                            <UnstyledButton onClick={handleRead} c="blue">
+                                {t("have-been-read")}
+                            </UnstyledButton>}
+                    </Flex>
+                </Card>}
+            <Modal opened={opened} onClose={toggle}>
+                {isLoading ?
+                    <Box>
+                        <CustomLoader />
+                    </Box>
+                    :
+                    <Box>
+                        <Text mb={20}>{date}</Text>
+                        <Title lh={1.3} fz={18}>
+                            {getTitleByLanguage(notificaionDetail)}
+                        </Title>
+                    </Box>}
+            </Modal>
+        </Grid.Col >
     )
 }

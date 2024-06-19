@@ -3,11 +3,13 @@ import { Grid, Title } from "@mantine/core"
 import { IconCircleCheck, IconMail, IconXboxX } from "@tabler/icons-react"
 import { useTranslation } from "react-i18next"
 import { Link, useParams } from "react-router-dom"
+import { useCookie } from "src/hooks"
 import { getTitleByLanguage } from "src/locales"
-import { useGetThesisQuery } from "src/store"
+import { useChooseThesisMutation, useGetThesisQuery } from "src/store"
+import { RolesEnum } from "src/types"
 import { CustomAppShell } from "src/ui-kits"
 import CustomLoader from "src/ui-kits/custom-loader"
-import { DateTime } from "src/utils"
+import { DateTime, notify } from "src/utils"
 
 type Params = {
     id: string
@@ -19,17 +21,30 @@ export const ThesisDetail = () => {
     const { data, isLoading } = useGetThesisQuery(id || 1, {
         refetchOnMountOrArgChange: !!id
     })
-
+    const profile = useCookie<Profile>("profile").getCookie()
+    const role = profile?.role
     const createdAt = DateTime.Format(`${data?.createdAt}`)
     const updatedAt = DateTime.Format(`${data?.updatedAt}`)
+    const [choose] = useChooseThesisMutation();
 
+    const handleChoose = async () => {
+        if (id) {
+            try {
+                await choose(id).unwrap()
+                notify(true, t("choosed"))
+            } catch (error) {
+                notify(false, t("cant-choose"))
+            }
+        }
+    }
     return (
         <CustomAppShell>
-            <Flex w="100%" mb={30} style={{ borderBottom: "1px solid rgba(39,39,39, 0.3)" }} py={10}>
-                <Button bg="baseDark" component={Link} to={`/thesis/${id}/edit`}>
-                    {t("edit")}
-                </Button>
-            </Flex>
+            {role === RolesEnum.TEACHER &&
+                <Flex w="100%" mb={30} style={{ borderBottom: "1px solid rgba(39,39,39, 0.3)" }} py={10}>
+                    <Button bg="baseDark" component={Link} to={`/thesis/${id}/edit`}>
+                        {t("edit")}
+                    </Button>
+                </Flex>}
             <Grid className="dark:text-white">
                 {isLoading ? (
                     <Grid.Col>
@@ -119,6 +134,12 @@ export const ThesisDetail = () => {
                     </>
                 )}
             </Grid>
+            {role === RolesEnum.STUDENT &&
+                <Flex w="100%" mb={30} style={{ borderBottom: "1px solid rgba(39,39,39, 0.3)" }} py={10}>
+                    <Button bg="baseDark" onClick={handleChoose}>
+                        {t("choose")}
+                    </Button>
+                </Flex>}
         </CustomAppShell>
     )
 }

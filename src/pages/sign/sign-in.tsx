@@ -5,16 +5,18 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { LanguageSelect, VerifyCode } from 'src/components';
+import { getMenu } from 'src/constants';
 import { useCookie } from 'src/hooks';
+import { routes } from 'src/route-config';
 import { useLoginMutation } from 'src/store';
 import { notify } from 'src/utils';
 
 export const SignIn = () => {
+  const [opened, { toggle }] = useDisclosure()
   const { t } = useTranslation();
   const navigate = useNavigate()
   const [login] = useLoginMutation()
-  const [opened, { toggle }] = useDisclosure()
-  const cookie = useCookie("profile")
+  const cookie = useCookie<Profile>("profile")
   function isValidEmail(email: string) {
     const res = /\S+@manas\.edu\.kg$/.test(email)
     return !res && t("incorrect-email");
@@ -33,12 +35,8 @@ export const SignIn = () => {
     try {
       const res = await login(values).unwrap();
       cookie.setCookie(res)
-      if (!res.isVerified) {
-        toggle()
-      } else {
-        navigate("/thesis")
-        notify(true, t("wellcome"))
-      }
+      notify(true, t("wellcome"))
+      navigate("/thesis")
     } catch (error) {
       notify(false, t("login-error"))
     }
@@ -50,7 +48,9 @@ export const SignIn = () => {
   useEffect(() => {
     const profile = cookie.getCookie()
     if (profile) {
-      navigate("/thesis")
+      const role = profile?.role
+      const menus = getMenu(t)?.filter((item) => item?.roles?.includes(role))
+      navigate(menus?.[0]?.path)
     }
   }, [])
   return (
@@ -65,6 +65,7 @@ export const SignIn = () => {
             <form onSubmit={form.onSubmit(values => handleSubmit(values))} className="space-y-4 md:space-y-6">
               <div>
                 <TextInput
+                  labelProps={{ class: "text-black dark:text-white" }}
                   {...form.getInputProps("email")}
                   error={form.errors.email}
                   label={t('email')}
@@ -72,6 +73,7 @@ export const SignIn = () => {
               </div>
               <div>
                 <PasswordInput
+                  labelProps={{ class: "text-black dark:text-white" }}
                   {...form.getInputProps("password")}
                   label={t('password')}
                 />

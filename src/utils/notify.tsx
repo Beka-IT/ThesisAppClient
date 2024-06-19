@@ -16,9 +16,6 @@ export const notify: notifyType = async (isSuccess, title, message) => {
                 maxWidth: 400,
                 minWidth: 280,
                 margin: "10px 20px",
-                position: "absolute",
-                bottom: 20,
-                right: 20
             },
             title: {
                 color: isSuccess ? "green" : "red",

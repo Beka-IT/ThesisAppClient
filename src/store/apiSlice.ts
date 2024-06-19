@@ -2,7 +2,7 @@ import {
   fetchBaseQuery,
   createApi,
 } from '@reduxjs/toolkit/query/react';
-import { BASE_API } from 'src/constants';
+import { BASE_API } from 'src/constants/api';
 import { useCookie } from 'src/hooks';
 
 const baseQuery = fetchBaseQuery({

@@ -74,5 +74,14 @@
   "decline": "Кабыл албоо",
   "isMyTheme": "Сунуштоочу алгысы келет",
   "request": "Сунуштоо",
-  "incorrect-email": "Туура эмес почта"
+  "incorrect-email": "Туура эмес почта",
+  "toggled-to-chosen": "Тема тандоо жабылды",
+  "myTheme": "Жаратуучу алгысы келет",
+  "creater-fullname": "Сунуштоочунун толук аты жону",
+  "created": "Сакталды",
+  "notifications-count": "Билдируу саны",
+  "have-been-read": "Окулду",
+  "some-error": "Бир нерсе туура эмес кетти",
+  "more": "Кененирээк",
+  "error": "Каталчылык кетти"
 }

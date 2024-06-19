@@ -41,7 +41,7 @@ export const requestApi = apiSlice.injectEndpoints({
                 method: "GET",
             }),
         }),
-        getAllThesisRequests: builder.query<RequestRespone[], unknown>({
+        getAllRequests: builder.query<RequestRespone[], unknown>({
             query: () => {
                 return {
                     url: Path.Requests.getAll,
@@ -58,6 +58,6 @@ export const {
     useDeclineRequestMutation,
     useGetRequestQuery,
     useDeleteRequestMutation,
-    useGetAllThesisRequestsQuery,
+    useGetAllRequestsQuery,
     useUpdateRequestMutation,
 } = requestApi

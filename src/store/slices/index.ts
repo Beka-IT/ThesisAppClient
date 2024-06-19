@@ -6,3 +6,4 @@ export * from "./thesis"
 export * from "./deadline"
 export * from "./notifications"
 export * from "./requests"
+export * from './requests'
